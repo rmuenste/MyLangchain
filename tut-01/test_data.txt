@@ -1,0 +1,56 @@
+Test Set 1
+=====================
+MachineName=XY 70
+NoOfFlights=2
+BarrelLength=75.0
+ProcessType=PRESSURE
+MassThroughput=250.0
+MaterialTemperature=300.0
+CalcVisco=Cross
+ZeroViscosity=420.50
+heatconductivity=0.150
+Density=1.05
+MeshQuality=high
+KTPRelease=YES
+=====================
+Set 2:
+FileVersion=SIGMA 11.0
+MachineName=XY 65
+BarrelDiameter=52.0
+NoOfElements=2
+BarrelLength=72.5
+ScrewSpeed=350.0
+MassThroughput=320.0
+MaterialTemperature=295.0
+ZeroViscosity=405.20
+heatcapacity=1.80
+Density=1.02
+MeshQuality=high
+=====================
+Set 3:
+Date=08/12/20
+RotationDirection=RIGHT
+BarrelStraightCut=0.5
+NoOfFlights=3
+ScrewTemperature=275.0
+ProcessType=ENERGY
+RecipVelocity=0.00031
+Exponent=0.92500
+standardtemperature=140.0
+referencetemperature=305.0
+densitymodel=VARIABLE
+KTPRelease=YES
+=====================
+Set 4:
+ConfigId=XY65_PE_450.xpro-202008120930
+Unit=cm
+GapScrewScrew=0.8
+ObjectType=barrel
+startposition=1.0
+innerdiameter=31.2
+CalcVisco=Cross
+BarrelTemperature=285.0
+CalcTemp=Ts
+heatconductivity=0.145
+heatconductivityslope=0.005
+MeshQuality=low
