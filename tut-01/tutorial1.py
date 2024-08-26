@@ -14,6 +14,7 @@ load_dotenv(dotenv_path="../.env")
 
 from langchain_openai import ChatOpenAI
 from langchain_core.messages import HumanMessage, SystemMessage
+from langchain_core.output_parsers import StrOutputParser
 
 current_date = datetime.datetime.now()
 date_string_short = current_date.strftime("%m/%d/%y") 
@@ -112,6 +113,9 @@ Answer the question based only on the following context:
 Answer the question based on the above context: {question}
 """
 
+
+parser = StrOutputParser()
+
 def process_query(query, history):
     #model = ChatOpenAI(model="gpt-4")
     model = ChatOpenAI(model="gpt-3.5-turbo", temperature=0.5)
@@ -122,8 +126,8 @@ def process_query(query, history):
     ]
     
     response = model.invoke(messages)
-    print(response)
-    return response.content
+    #print(response)
+    return parser.invoke(response)
 
 with gr.Blocks() as iface:
     chatbot = gr.ChatInterface(
