@@ -9,33 +9,50 @@ from langgraph.graph.message import add_messages
 from langchain_core.messages import AIMessage, HumanMessage, BaseMessage
 from typing import TypedDict, Annotated, Sequence
 from langgraph.graph import StateGraph, END
+from langchain_core.utils.function_calling import convert_to_openai_function
+from langchain_community.tools.openweathermap import OpenWeatherMapQueryRun
+from langchain_core.utils.function_calling import convert_to_openai_function
+from langgraph.prebuilt import ToolInvocation
+import json
+from langchain_core.messages import FunctionMessage
+from langgraph.prebuilt import ToolExecutor
 # Now you can access your environment variables using os.environ
 
 load_dotenv(dotenv_path="../.env")
 
-weather = OpenWeatherMapAPIWrapper()
-
 # Set the model as ChatOpenAI
 model = ChatOpenAI(temperature=0.5) 
+
+weather = OpenWeatherMapAPIWrapper()
+
+tools = [OpenWeatherMapQueryRun()]
+
+functions = [convert_to_openai_function(function) for function in tools]
+
+model = model.bind_functions(functions)
+
 
 
 class AgentState(TypedDict):
     messages: Annotated[Sequence[BaseMessage], add_messages]
 
+tool_executor = ToolExecutor(tools)
 
 def function_1(state):
     messages = state["messages"]
-    user_input = messages[-1]
+    user_input = messages[-1].content
     complete_query = "Your task is to provide only the city name based on the user query. \
-        Nothing more, just the city name mentioned. Following is the user query: " + user_input.content
+        Nothing more, just the city name mentioned. Following is the user query: " + user_input
     response = model.invoke(complete_query)
-    return {"messages": [response.content]}
+    return {"messages": [AIMessage(content=response.content)]}
 
 def function_2(state):
     messages = state["messages"]
-    weather_data = weather.run(messages[-1])
-    state["messages"].append(weather_data)
-    return {"messages": [weather_data]}
+    lastMessage = messages[-1]
+
+    parsed_tool_input = json.loads(lastMessage.additional_kwargs["function_call"]["arguments"])
+
+
 
 def function_3(state):
     messages = state["messages"]

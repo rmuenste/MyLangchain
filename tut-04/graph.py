@@ -1,11 +1,7 @@
 import os
-<<<<<<< HEAD
 from typing import TypedDict, Annotated, Sequence
 import operator
 from langchain_core.messages import BaseMessage
-=======
-#https://github.com/langchain-ai/langgraph/blob/main/examples/rag/langgraph_agentic_rag.ipynb
->>>>>>> origin/master
 from dotenv import load_dotenv
 from langchain_openai import ChatOpenAI
 import pyowm
@@ -67,7 +63,6 @@ workflow.set_entry_point("agent")
 workflow.set_finish_point("responder")
 
 app = workflow.compile()
-<<<<<<< HEAD
 
 inputs = {"messages": ["What's the temperature in Las Vegas"]}
 # Invoking it all at once
@@ -83,7 +78,3 @@ for output in app.stream(inputs):
         print("---")
         print(value)
     print("\n---\n")
-=======
-resp = app.invoke("What's the temperature in Las Vegas")
-print(resp)
->>>>>>> origin/master
